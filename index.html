@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Lab Experiments</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f6f9;
+    color: #333;
+}
+
+header {
+    background: #0d6efd;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.experiment-list {
+    display: grid;
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    color: #0d6efd;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0b5ed7;
+}
+
+pre {
+    background: #1e1e1e;
+    color: #00ff99;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+.back-btn {
+    margin-bottom: 20px;
+    background: #6c757d;
+}
+
+.back-btn:hover {
+    background: #5c636a;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>AI Lab Experiments Portal</h1>
+    <p>View and download all AI Lab experiment codes</p>
+</header>
+
+<div class="container">
+
+    <!-- Home Page -->
+    <div id="homePage">
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="Search experiments..."
+            onkeyup="searchExperiments()"
+        >
+
+        <div id="experimentList" class="experiment-list"></div>
+    </div>
+
+    <!-- Detail Page -->
+    <div id="detailPage" class="hidden">
+        <button class="back-btn" onclick="goHome()">← Back</button>
+
+        <h2 id="detailTitle"></h2>
+        <p id="detailAim"></p>
+
+        <button onclick="copyCode()">Copy Code</button>
+        <button onclick="downloadCode()">Download Code</button>
+
+        <pre id="detailCode"></pre>
+    </div>
+
+</div>
+
+<script>
+// Add your experiments here
+const experiments = [
+    {
+        title: "Breadth First Search (BFS)",
+        aim: "To traverse a graph using Breadth First Search.",
+        filename: "bfs.py",
+        code: `from collections import deque
+
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            print(node, end=' ')
+            visited.add(node)
+            queue.extend(graph[node])
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': [],
+    'F': []
+}
+
+bfs(graph, 'A')`
+    },
+
+    {
+        title: "Depth First Search (DFS)",
+        aim: "To traverse a graph using Depth First Search.",
+        filename: "dfs.py",
+        code: `def dfs(graph, node, visited=set()):
+    if node not in visited:
+        print(node, end=' ')
+        visited.add(node)
+        for neighbor in graph[node]:
+            dfs(graph, neighbor, visited)
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': [],
+    'F': []
+}
+
+dfs(graph, 'A')`
+    },
+
+    {
+        title: "A* Search Algorithm",
+        aim: "To find the shortest path using A* Search.",
+        filename: "astar.py",
+        code: `# Add your A* Search code here`
+    }
+];
+
+let currentExperiment = null;
+
+// Render experiment cards
+function renderExperiments(list) {
+    const container = document.getElementById("experimentList");
+    container.innerHTML = "";
+
+    list.forEach(exp => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = () => showExperiment(exp);
+
+        card.innerHTML = `
+            <h3>${exp.title}</h3>
+            <p>${exp.aim}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+// Show experiment details
+function showExperiment(exp) {
+    currentExperiment = exp;
+
+    document.getElementById("homePage").classList.add("hidden");
+    document.getElementById("detailPage").classList.remove("hidden");
+
+    document.getElementById("detailTitle").textContent = exp.title;
+    document.getElementById("detailAim").textContent = exp.aim;
+    document.getElementById("detailCode").textContent = exp.code;
+}
+
+// Go back to home page
+function goHome() {
+    document.getElementById("detailPage").classList.add("hidden");
+    document.getElementById("homePage").classList.remove("hidden");
+}
+
+// Search experiments
+function searchExperiments() {
+    const query = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const filtered = experiments.filter(exp =>
+        exp.title.toLowerCase().includes(query)
+    );
+
+    renderExperiments(filtered);
+}
+
+// Copy code
+function copyCode() {
+    navigator.clipboard.writeText(currentExperiment.code);
+    alert("Code copied to clipboard!");
+}
+
+// Download code
+function downloadCode() {
+    const blob = new Blob(
+        [currentExperiment.code],
+        { type: "text/plain" }
+    );
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = currentExperiment.filename;
+    link.click();
+}
+
+// Initial load
+renderExperiments(experiments);
+</script>
+
+</body>
+</html>
