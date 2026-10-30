@@ -141,8 +141,8 @@ pre {
 // Add your experiments here
 const experiments = [
     {
-        title: "Study of Prolog",
-        aim: "To traverse a graph using Breadth First Search.",
+        title: "Encryption and Decryption Using Ceaser Cipher",
+        aim: "To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm. ",
         filename: "bfs.py",
         code: `parent(pam, bob). parent(tom, bob). parent(tom, liz). parent(bob, ann). parent(bob, pat).
 parent(pat, jim).`
@@ -152,9 +152,71 @@ parent(pat, jim).`
         title: "SIMPLE FACT FOR THE STATEMENTS",
         aim: "To traverse a graph using Depth First Search.",
         filename: "dfs.py",
-        code: `delicious(cakes). delicious(pickles). spicy(pickles). relishes(priya, coffee).
-% here Food is a variable likes(priya, Food):-delicious(Food).
-likes(prakash, Food):- spicy(Food), delicious(Food).`
+        code: `import java.util.Scanner;
+
+public class CaesarCipherMain {
+
+    public static final String alph = "abcdefghijklmnopqrstuvwxyz";
+
+    // Encryption
+    public static String encoding(String plainT, int shift) {
+        plainT = plainT.toLowerCase();
+        String cipherT = "";
+
+        for (int i = 0; i < plainT.length(); i++) {
+            char ch = plainT.charAt(i);
+
+            if (alph.indexOf(ch) != -1) {
+                int mappingV = alph.indexOf(ch);
+                int enVal = (mappingV + shift) % 26;
+                char val = alph.charAt(enVal);
+                cipherT += val;
+            } else {
+                cipherT += ch;
+            }
+        }
+
+        return cipherT;
+    }
+
+    // Decryption
+    public static String decoding(String cipherT, int shift) {
+        cipherT = cipherT.toLowerCase();
+        String plainT = "";
+
+        for (int i = 0; i < cipherT.length(); i++) {
+            char ch = cipherT.charAt(i);
+
+            if (alph.indexOf(ch) != -1) {
+                int mappingV = alph.indexOf(ch);
+                int deVal = (mappingV - shift + 26) % 26;
+                char val = alph.charAt(deVal);
+                plainT += val;
+            } else {
+                plainT += ch;
+            }
+        }
+
+        return plainT;
+    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Enter the text message to be encrypted:");
+        String msg = scan.nextLine();
+
+        int shift = 4;
+
+        String encrypted = encoding(msg, shift);
+        System.out.println("Encrypted Message: " + encrypted);
+
+        String decrypted = decoding(encrypted, shift);
+        System.out.println("Decrypted Message: " + decrypted);
+
+        scan.close();
+    }
+}.`
     },
 
     {
