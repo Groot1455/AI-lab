@@ -667,63 +667,6 @@ class RailFenceCipher {
 }`
     },
      {
-        title: "MISSIONARIES AND CANNIBAL PROBLEM",
-        aim: "To find the shortest path using A* Search.",
-        filename: "astar.py",
-        code: `% Start and Goal
-start([3,3,left,0,0]).
-goal([0,0,right,3,3]).
-% Valid state conditions
-valid(CL, ML, CR, MR) :-
-% No negative values
-CL >= 0, ML >= 0, CR >= 0, MR >= 0,
-% Total people must remain constant
-CL + CR =:= 3,
-ML + MR =:= 3,
-% Missionaries should not be outnumbered
-(ML >= CL ; ML =:= 0),
-(MR >= CR ; MR =:= 0).
-% Boat capacity (only 1 or 2 people)
-boat(2,0). % 2 cannibals
-boat(0,2). % 2 missionaries
-boat(1,1). % 1 cannibal + 1 missionary
-boat(1,0). % 1 cannibal
-boat(0,1). % 1 missionary
-% Move: Left → Right
-move([CL,ML,left,CR,MR], [CL2,ML2,right,CR2,MR2]) :-
-boat(C,M),
-CL2 is CL - C,
-ML2 is ML - M,
-CR2 is CR + C,
-MR2 is MR + M,
-valid(CL2,ML2,CR2,MR2).
-% Move: Right → Left
-move([CL,ML,right,CR,MR], [CL2,ML2,left,CR2,MR2]) :-
-boat(C,M),
-CL2 is CL + C,
-ML2 is ML + M,
-CR2 is CR - C,
-MR2 is MR - M,
-valid(CL2,ML2,CR2,MR2).
-% Path search (DFS with visited states)
-path(State, State, _, [State]).
-path(State, Goal, Visited, [State|Path]) :-
-move(State, Next),
-\+ member(Next, Visited),
-path(Next, Goal, [Next|Visited], Path).
-% Solve
-solve :-
-start(Start),
-goal(Goal),
-path(Start, Goal, [Start], Path),
-print_solution(Path).
-% Print solution
-print_solution([]).
-print_solution([H|T]) :-
-write(H), nl,
-print_solution(T).`
-    },
-     {
         title: "Row and Column Transformation Technique ",
         aim: "To find the shortest path using A* Search.",
         filename: "astar.py",
@@ -1109,7 +1052,7 @@ parent(pat, jim).`
         filename: "bfs.py",
         code: `parent(pam, bob). parent(tom, bob). parent(tom, liz). parent(bob, ann). parent(bob, pat).
 parent(pat, jim).`
-    },
+    }
 ];
 
 let currentExperiment = null;
