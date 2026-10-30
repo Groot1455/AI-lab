@@ -1037,20 +1037,179 @@ public class AES {
 </html>
 `
 },
-  {
-        title: "Playfair Cipher ",
-        aim: "To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm. ",
-        filename: "bfs.py",
-        code: `parent(pam, bob). parent(tom, bob). parent(tom, liz). parent(bob, ann). parent(bob, pat).
-parent(pat, jim).`
-    },
-     {
-        title: "Playfair Cipher ",
-        aim: "To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm. ",
-        filename: "bfs.py",
-        code: `parent(pam, bob). parent(tom, bob). parent(tom, liz). parent(bob, ann). parent(bob, pat).
-parent(pat, jim).`
+ 
+{
+    title: "Diffie-Hellman key exchange algorithm ",
+    aim: "To implement the Diffie-Hellman key exchange algorithm to generate a shared secret key between two parties.",
+    filename: "DiffieHellman.java",
+    code: `
+public class DiffieHellman {
+
+    public static void main(String args[]) {
+
+        int p = 23;  // Publicly known prime number
+        int g = 5;   // Publicly known primitive root
+
+        int x = 4;   // Alice's private key
+        int y = 3;   // Bob's private key
+
+        // Alice generates and sends her public value
+        int aliceSends = (int) (Math.pow(g, x) % p);
+
+        // Bob computes shared secret
+        int bobComputes = (int) (Math.pow(aliceSends, y) % p);
+
+        // Bob generates and sends his public value
+        int bobSends = (int) (Math.pow(g, y) % p);
+
+        // Alice computes shared secret
+        int aliceComputes = (int) (Math.pow(bobSends, x) % p);
+
+        // Calculate shared secret
+        int sharedSecret = (int) (Math.pow(g, x * y) % p);
+
+        System.out.println("Simulation of Diffie-Hellman Key Exchange Algorithm");
+        System.out.println("-----------------------------------------");
+
+        System.out.println("Alice Sends : " + aliceSends);
+        System.out.println("Bob Computes : " + bobComputes);
+        System.out.println("Bob Sends : " + bobSends);
+        System.out.println("Alice Computes : " + aliceComputes);
+        System.out.println("Shared Secret : " + sharedSecret);
+
+        if (aliceComputes == sharedSecret &&
+            aliceComputes == bobComputes) {
+
+            System.out.println("Success: Shared Secrets Matches! " + sharedSecret);
+
+        } else {
+
+            System.out.println("Error: Shared Secrets does not Match");
+        }
     }
+}
+`
+},
+    
+{
+    title: "SHA-1 Algorithm",
+    aim: "To implement the SHA-1 hashing algorithm and generate message digests for the given input strings.",
+    filename: "sha1.java",
+    code: `
+import java.security.*;
+
+public class sha1 {
+
+    public static void main(String[] a) {
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+
+            System.out.println("Message digest object info:");
+            System.out.println("--------------------------");
+
+            System.out.println("Algorithm=" + md.getAlgorithm());
+            System.out.println("Provider=" + md.getProvider());
+            System.out.println("ToString=" + md.toString());
+
+            String input = "";
+
+            md.update(input.getBytes());
+            byte[] output = md.digest();
+
+            System.out.println();
+            System.out.println("SHA1(\\"" + input + "\\")=" + bytesToHex(output));
+
+            input = "abc";
+
+            md.update(input.getBytes());
+            output = md.digest();
+
+            System.out.println();
+            System.out.println("SHA1(\\"" + input + "\\")=" + bytesToHex(output));
+
+            input = "abcdefghijklmnopqrstuvwxyz";
+
+            md.update(input.getBytes());
+            output = md.digest();
+
+            System.out.println();
+            System.out.println("SHA1(\\"" + input + "\\")=" + bytesToHex(output));
+
+            System.out.println();
+
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+    }
+
+    // Convert byte array into hexadecimal string
+    private static String bytesToHex(byte[] b) {
+
+        char hexDigit[] = {
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+        };
+
+        StringBuffer buf = new StringBuffer();
+
+        for (byte aB : b) {
+            buf.append(hexDigit[(aB >> 4) & 0x0f]);
+            buf.append(hexDigit[aB & 0x0f]);
+        }
+
+        return buf.toString();
+    }
+}
+`
+},
+ 
+{
+    title: "Digital Signature",
+    aim: "To generate a digital signature for the given message using the DSA algorithm.",
+    filename: "CreatingDigitalSignature.java",
+    code: `
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.util.Scanner;
+import java.util.Base64;
+
+public class CreatingDigitalSignature {
+
+    public static void main(String args[]) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter some text");
+        String msg = sc.nextLine();
+
+        // Generate DSA key pair
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DSA");
+        keyPairGen.initialize(2048);
+
+        KeyPair pair = keyPairGen.generateKeyPair();
+        PrivateKey privKey = pair.getPrivate();
+
+        // Create digital signature
+        Signature sign = Signature.getInstance("SHA256withDSA");
+
+        sign.initSign(privKey);
+
+        byte[] bytes = msg.getBytes("UTF-8");
+        sign.update(bytes);
+
+        byte[] signature = sign.sign();
+
+        System.out.println("Digital signature for given text: "
+                + Base64.getEncoder().encodeToString(signature));
+
+        sc.close();
+    }
+}
+`
+}
 ];
 
 let currentExperiment = null;
